@@ -80,7 +80,7 @@
             font-weight: 600;
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 10px;
-            display: inline-block;
+            display: inline-block; /* Agar border-bottom hanya selebar teks */
         }
 
         .form-group {
@@ -97,7 +97,7 @@
         input[type="text"],
         textarea,
         select {
-            width: calc(100% - 24px);
+            width: calc(100% - 24px); /* Kurangi padding + border */
             padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -126,7 +126,7 @@
 
         .form-row .form-group {
             flex: 1;
-            margin-bottom: 0;
+            margin-bottom: 0; /* Override default margin for row items */
         }
 
         .btn {
@@ -137,7 +137,7 @@
             font-size: 1.1em;
             font-weight: 600;
             transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
-            display: inline-flex;
+            display: inline-flex; /* Untuk spinner */
             align-items: center;
             justify-content: center;
             gap: 10px;
@@ -165,9 +165,9 @@
         .secondary-btn {
             background-color: var(--secondary-color);
             color: white;
-            width: auto; /* Untuk tombol copy, agar tidak selebar parent */
-            margin-top: 15px; /* Spasi di bawah textarea */
-            align-self: flex-end; /* Dorong ke kanan di layar kecil */
+            margin-top: 15px;
+            width: auto; /* Agar tidak 100% seperti primary */
+            align-self: flex-end; /* Untuk menempatkan di kanan */
         }
 
         .secondary-btn:hover {
@@ -186,60 +186,7 @@
             background-color: var(--background-light);
             border: 1px solid var(--border-color);
             min-height: 200px;
-            margin-bottom: 0; /* Pastikan tidak ada margin bawah yang mengganggu layout */
         }
-
-        /* --- STYLING UNTUK SOCIAL MEDIA LINKS --- */
-        .social-media-links-container {
-            /* Container untuk social media links saja, agar bisa diatur layout-nya */
-            display: flex;
-            justify-content: center; /* Default center for small screens */
-            gap: 20px;
-            margin-top: 20px; /* Spasi dari elemen di atasnya (textarea atau tombol copy) */
-            padding-top: 15px; /* Spasi dari border atas */
-            border-top: 1px solid #eee; /* Garis pemisah */
-            flex-wrap: wrap; /* Izinkan wrap jika layar terlalu kecil */
-        }
-
-        .social-media-links a {
-            font-size: 1.1em; /* Ukuran teks link */
-            text-decoration: none;
-            transition: color 0.3s ease, transform 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px; /* Spasi antara ikon dan teks (opsional, karena teks akan disembunyikan) */
-        }
-
-        .social-media-links a:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Ikon sederhana (emoji atau karakter) */
-        .social-icon::before {
-            font-family: 'Arial Unicode MS', sans-serif; /* Font yang mendukung emoji */
-            font-weight: normal; /* Normal untuk emoji */
-            font-size: 2em; /* Ukuran ikon cukup besar */
-            display: inline-block;
-            vertical-align: middle;
-            line-height: 1; /* Pastikan emoji tidak membuat baris terlalu tinggi */
-        }
-        /* Hanya tampilkan ikon, sembunyikan teks link */
-        .social-media-links a span {
-            display: none; 
-        }
-
-        /* Warna dan konten ikon */
-        .facebook { color: #3b5998; }
-        .facebook::before { content: "f"; font-family: 'Poppins', sans-serif; font-weight: 600;} /* Kembali ke Poppins untuk 'f' */
-        .instagram { color: #C13584; }
-        .instagram::before { content: "📸"; } 
-        .github { color: #333; }
-        .github::before { content: "👨‍💻"; } 
-        .website { color: #007bff; }
-        .website::before { content: "🌐"; } 
-
-        /* --- END SOCIAL MEDIA LINKS STYLING --- */
-
 
         .message-box {
             margin-top: 20px;
@@ -282,7 +229,6 @@
             font-size: 0.9em;
         }
 
-        /* Responsive adjustments */
         @media (min-width: 768px) {
             main {
                 flex-direction: row;
@@ -293,15 +239,6 @@
             .output-section {
                 display: flex;
                 flex-direction: column;
-            }
-            /* Tombol copy tetap di kanan */
-            .secondary-btn {
-                align-self: flex-end; 
-                margin-top: 15px; /* Tetap beri margin atas */
-            }
-            /* Social media links ke kanan di layar besar */
-            .social-media-links-container {
-                justify-content: flex-end; 
             }
         }
     </style>
@@ -375,16 +312,7 @@
             <section class="output-section card">
                 <h2>Generated Sales Text</h2>
                 <textarea id="generatedText" rows="10" readonly placeholder="Your generated sales text will appear here..."></textarea>
-                
                 <button id="copyBtn" class="btn secondary-btn" style="display: none;">Copy Text</button>
-                
-                <div id="socialLinksContainer" class="social-media-links-container" style="display: none;">
-                    <a href="https://facebook.com/farid.siddiq.11" target="_blank" class="facebook social-icon" title="Facebook"><span>Facebook</span></a>
-                    <a href="https://instagram.com/scv.farid1717_" target="_blank" class="instagram social-icon" title="Instagram"><span>Instagram</span></a>
-                    <a href="https://github.com/farid-store" target="_blank" class="github social-icon" title="GitHub"><span>GitHub</span></a>
-                    <a href="https://farid-store.github.io/portofolio/index.html" target="_blank" class="website social-icon" title="Website"><span>Website</span></a>
-                </div>
-                
                 <div id="message" class="message-box" style="display: none;"></div>
             </section>
         </main>
@@ -408,17 +336,15 @@
             const loadingSpinner = document.getElementById('loadingSpinner');
             const generatedTextarea = document.getElementById('generatedText');
             const copyBtn = document.getElementById('copyBtn');
-            const socialLinksContainer = document.getElementById('socialLinksContainer'); // ID baru
             const messageBox = document.getElementById('message');
 
             // Handle Generate Button Click
             generatorForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
+                event.preventDefault(); // Prevent default form submission
 
-                // Clear previous messages and results, hide relevant elements
+                // Clear previous messages and results
                 generatedTextarea.value = '';
-                copyBtn.style.display = 'none'; // Tombol copy tersembunyi
-                socialLinksContainer.style.display = 'none'; // Container sosial media tersembunyi
+                copyBtn.style.display = 'none';
                 hideMessage();
 
                 // Validate inputs
@@ -457,9 +383,8 @@
 
                     const data = await response.json();
                     generatedTextarea.value = data.text;
-                    copyBtn.style.display = 'inline-flex'; // Tombol copy ditampilkan
-                    socialLinksContainer.style.display = 'flex'; // Container sosial media ditampilkan
-                    
+                    copyBtn.style.display = 'inline-flex'; // Show copy button
+
                 } catch (err) {
                     showMessage(`Error: ${err.message}`, 'error');
                 } finally {
@@ -472,11 +397,11 @@
 
             // Handle Copy Button Click
             copyBtn.addEventListener('click', () => {
-                generatedTextarea.select();
-                generatedTextarea.setSelectionRange(0, 99999);
+                generatedTextarea.select(); // Select the text in the textarea
+                generatedTextarea.setSelectionRange(0, 99999); // For mobile devices
 
                 try {
-                    document.execCommand('copy');
+                    document.execCommand('copy'); // Copy the text
                     showMessage('Text copied to clipboard!', 'success');
                 } catch (err) {
                     showMessage('Failed to copy text. Please copy manually.', 'error');
@@ -486,7 +411,7 @@
             // Helper functions for messages
             function showMessage(msg, type) {
                 messageBox.textContent = msg;
-                messageBox.className = `message-box ${type}-message`;
+                messageBox.className = `message-box ${type}-message`; // Set class based on type
                 messageBox.style.display = 'block';
             }
 
