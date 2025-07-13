@@ -19,7 +19,7 @@ export default async function handler(request, response) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   // Gunakan model yang paling cocok untuk teks, misalnya 'gemini-pro'.
   // Pastikan model ini tersedia di region Anda.
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   try {
     let systemInstruction = "";
