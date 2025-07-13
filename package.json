@@ -1,0 +1,13 @@
+{
+  "name": "sales-text-generator-gemini-multilang",
+  "version": "1.0.0",
+  "description": "AI sales text generator with pure HTML, CSS, JS, and Gemini API with multi-language support",
+  "main": "api/generate.js",
+  "scripts": {
+    "start": "npx vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.1.0"
+  }
+}

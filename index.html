@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sales Text Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 400;
+        }
+        textarea, input[type="text"], select { /* Tambah select di sini */
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus, input[type="text"]:focus, select:focus { /* Tambah select di sini */
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            display: block;
+            margin-left: auto;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8fbfd;
+            border: 1px solid #e0e7ee;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Sales Text Generator</h1>
+        <form id="generatorForm">
+            <div>
+                <label for="language">Pilih Bahasa:</label>
+                <select id="language">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div>
+                <label for="prompt">Deskripsi Produk/Layanan:</label>
+                <textarea id="prompt" rows="6" placeholder="Contoh: 'Kursus online interaktif untuk belajar coding dari nol hingga menjadi web developer profesional.'" required></textarea>
+            </div>
+            <div>
+                <label for="keywords">Kata Kunci (opsional, pisahkan dengan koma):</label>
+                <input type="text" id="keywords" placeholder="Contoh: 'belajar cepat, karir baru, dukungan mentor'">
+            </div>
+            <button type="submit" id="generateButton">
+                <span id="buttonText">Hasilkan Teks Penjualan</span>
+                <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+            </button>
+        </form>
+
+        <div id="result" class="result-box" style="display: none;"></div>
+        <div id="error" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('generatorForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const language = document.getElementById('language').value; // Ambil pilihan bahasa
+            const prompt = document.getElementById('prompt').value;
+            const keywords = document.getElementById('keywords').value;
+            const generateButton = document.getElementById('generateButton');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+
+            // Reset UI
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            resultDiv.innerHTML = '';
+            errorDiv.innerHTML = '';
+
+            // Loading state
+            generateButton.disabled = true;
+            buttonText.textContent = 'Menghasilkan...';
+            loadingSpinner.style.display = 'inline-block';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt, keywords, language }), // Kirim bahasa ke backend
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Terjadi kesalahan saat menghubungi server.');
+                }
+
+                const data = await response.json();
+                resultDiv.innerHTML = data.text;
+                resultDiv.style.display = 'block';
+
+            } catch (err) {
+                errorDiv.innerHTML = `Error: ${err.message}`;
+                errorDiv.style.display = 'block';
+            } finally {
+                // Reset loading state
+                generateButton.disabled = false;
+                buttonText.textContent = 'Hasilkan Teks Penjualan';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
