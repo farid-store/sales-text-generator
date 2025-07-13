@@ -6,194 +6,417 @@
     <title>AI Sales Text Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-dark: #0056b3;
+            --secondary-color: #6c757d;
+            --secondary-dark: #5a6268;
+            --background-light: #f4f7f6;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
             min-height: 100vh;
             box-sizing: border-box;
+            line-height: 1.6;
         }
+
         .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 700px;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        h1 {
+
+        header {
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
             font-weight: 600;
         }
+
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            display: inline-block; /* Agar border-bottom hanya selebar teks */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
             font-weight: 400;
+            color: #555;
         }
-        textarea, input[type="text"], select { /* Tambah select di sini */
-            width: calc(100% - 20px);
+
+        input[type="text"],
+        textarea,
+        select {
+            width: calc(100% - 24px); /* Kurangi padding + border */
             padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1em;
             box-sizing: border-box;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        textarea:focus, input[type="text"]:focus, select:focus { /* Tambah select di sini */
-            border-color: #007bff;
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
             outline: none;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 14px 25px;
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0; /* Override default margin for row items */
+        }
+
+        .btn {
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 1.1em;
             font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            width: auto;
-            display: block;
-            margin-left: auto;
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+            display: inline-flex; /* Untuk spinner */
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        button:hover {
-            background-color: #0056b3;
+
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .primary-btn:hover {
+            background-color: var(--primary-dark);
             transform: translateY(-2px);
         }
-        button:disabled {
+
+        .primary-btn:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
+            opacity: 0.8;
             transform: none;
         }
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8fbfd;
-            border: 1px solid #e0e7ee;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+
+        .secondary-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            margin-top: 15px;
+            width: auto; /* Agar tidak 100% seperti primary */
+            align-self: flex-end; /* Untuk menempatkan di kanan */
         }
-        .error-message {
-            color: #dc3545;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            border-radius: 8px;
+
+        .secondary-btn:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.8;
+            transform: none;
+        }
+
+        .output-section textarea {
+            background-color: var(--background-light);
+            border: 1px solid var(--border-color);
+            min-height: 200px;
+        }
+
+        .message-box {
             margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
+            font-weight: 500;
         }
+
+        .success-message {
+            background-color: #d4edda;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
         .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             animation: spin 1s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 10px;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                flex-direction: row;
+            }
+            .input-section, .output-section {
+                flex: 1;
+            }
+            .output-section {
+                display: flex;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>AI Sales Text Generator</h1>
-        <form id="generatorForm">
-            <div>
-                <label for="language">Pilih Bahasa:</label>
-                <select id="language">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-            <div>
-                <label for="prompt">Deskripsi Produk/Layanan:</label>
-                <textarea id="prompt" rows="6" placeholder="Contoh: 'Kursus online interaktif untuk belajar coding dari nol hingga menjadi web developer profesional.'" required></textarea>
-            </div>
-            <div>
-                <label for="keywords">Kata Kunci (opsional, pisahkan dengan koma):</label>
-                <input type="text" id="keywords" placeholder="Contoh: 'belajar cepat, karir baru, dukungan mentor'">
-            </div>
-            <button type="submit" id="generateButton">
-                <span id="buttonText">Hasilkan Teks Penjualan</span>
-                <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
-            </button>
-        </form>
+        <header>
+            <h1>AI Sales Text Generator</h1>
+            <p class="subtitle">Craft compelling sales copy in seconds with the power of AI.</p>
+        </header>
 
-        <div id="result" class="result-box" style="display: none;"></div>
-        <div id="error" class="error-message" style="display: none;"></div>
+        <main>
+            <section class="input-section card">
+                <h2>Input Details</h2>
+                <form id="generatorForm">
+                    <div class="form-group">
+                        <label for="productName">Product/Service Name:</label>
+                        <input type="text" id="productName" placeholder="e.g., Smartwatch Pro" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="audience">Target Audience:</label>
+                        <input type="text" id="audience" placeholder="e.g., Tech enthusiasts, Busy professionals" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sellingPoints">Key Selling Points (comma-separated):</label>
+                        <textarea id="sellingPoints" rows="3" placeholder="e.g., Long battery life, Waterproof, Health tracking" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tone">Tone:</label>
+                            <select id="tone">
+                                <option value="Persuasive">Persuasive</option>
+                                <option value="Informative">Informative</option>
+                                <option value="Enthusiastic">Enthusiastic</option>
+                                <option value="Humorous">Humorous</option>
+                                <option value="Formal">Formal</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="length">Length:</label>
+                            <select id="length">
+                                <option value="Short (1-2 sentences)">Short</option>
+                                <option value="Medium (3-5 sentences)">Medium</option>
+                                <option value="Long (1-2 paragraphs)">Long</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">Output Language:</label>
+                        <select id="language">
+                            <option value="English">English</option>
+                            <option value="Indonesian">Indonesian</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="btn primary-btn">
+                        <span id="buttonText">Generate Sales Text</span>
+                        <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="output-section card">
+                <h2>Generated Sales Text</h2>
+                <textarea id="generatedText" rows="10" readonly placeholder="Your generated sales text will appear here..."></textarea>
+                <button id="copyBtn" class="btn secondary-btn" style="display: none;">Copy Text</button>
+                <div id="message" class="message-box" style="display: none;"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 AI Sales Text Generator. All rights reserved.</p>
+        </footer>
     </div>
 
     <script>
-        document.getElementById('generatorForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const language = document.getElementById('language').value; // Ambil pilihan bahasa
-            const prompt = document.getElementById('prompt').value;
-            const keywords = document.getElementById('keywords').value;
-            const generateButton = document.getElementById('generateButton');
+        document.addEventListener('DOMContentLoaded', () => {
+            const generatorForm = document.getElementById('generatorForm');
+            const productNameInput = document.getElementById('productName');
+            const audienceInput = document.getElementById('audience');
+            const sellingPointsTextarea = document.getElementById('sellingPoints');
+            const toneSelect = document.getElementById('tone');
+            const lengthSelect = document.getElementById('length');
+            const languageSelect = document.getElementById('language');
+            const generateBtn = document.getElementById('generateBtn');
             const buttonText = document.getElementById('buttonText');
             const loadingSpinner = document.getElementById('loadingSpinner');
-            const resultDiv = document.getElementById('result');
-            const errorDiv = document.getElementById('error');
+            const generatedTextarea = document.getElementById('generatedText');
+            const copyBtn = document.getElementById('copyBtn');
+            const messageBox = document.getElementById('message');
 
-            // Reset UI
-            resultDiv.style.display = 'none';
-            errorDiv.style.display = 'none';
-            resultDiv.innerHTML = '';
-            errorDiv.innerHTML = '';
+            // Handle Generate Button Click
+            generatorForm.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission
 
-            // Loading state
-            generateButton.disabled = true;
-            buttonText.textContent = 'Menghasilkan...';
-            loadingSpinner.style.display = 'inline-block';
+                // Clear previous messages and results
+                generatedTextarea.value = '';
+                copyBtn.style.display = 'none';
+                hideMessage();
 
-            try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt, keywords, language }), // Kirim bahasa ke backend
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Terjadi kesalahan saat menghubungi server.');
+                // Validate inputs
+                if (!productNameInput.value || !audienceInput.value || !sellingPointsTextarea.value) {
+                    showMessage('Please fill in all required fields.', 'error');
+                    return;
                 }
 
-                const data = await response.json();
-                resultDiv.innerHTML = data.text;
-                resultDiv.style.display = 'block';
+                // Set loading state
+                generateBtn.disabled = true;
+                buttonText.textContent = 'Generating...';
+                loadingSpinner.style.display = 'inline-block';
 
-            } catch (err) {
-                errorDiv.innerHTML = `Error: ${err.message}`;
-                errorDiv.style.display = 'block';
-            } finally {
-                // Reset loading state
-                generateButton.disabled = false;
-                buttonText.textContent = 'Hasilkan Teks Penjualan';
-                loadingSpinner.style.display = 'none';
+                const payload = {
+                    productName: productNameInput.value,
+                    audience: audienceInput.value,
+                    sellingPoints: sellingPointsTextarea.value,
+                    tone: toneSelect.value,
+                    length: lengthSelect.value,
+                    language: languageSelect.value
+                };
+
+                try {
+                    const response = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Server error. Please try again.');
+                    }
+
+                    const data = await response.json();
+                    generatedTextarea.value = data.text;
+                    copyBtn.style.display = 'inline-flex'; // Show copy button
+
+                } catch (err) {
+                    showMessage(`Error: ${err.message}`, 'error');
+                } finally {
+                    // Reset loading state
+                    generateBtn.disabled = false;
+                    buttonText.textContent = 'Generate Sales Text';
+                    loadingSpinner.style.display = 'none';
+                }
+            });
+
+            // Handle Copy Button Click
+            copyBtn.addEventListener('click', () => {
+                generatedTextarea.select(); // Select the text in the textarea
+                generatedTextarea.setSelectionRange(0, 99999); // For mobile devices
+
+                try {
+                    document.execCommand('copy'); // Copy the text
+                    showMessage('Text copied to clipboard!', 'success');
+                } catch (err) {
+                    showMessage('Failed to copy text. Please copy manually.', 'error');
+                }
+            });
+
+            // Helper functions for messages
+            function showMessage(msg, type) {
+                messageBox.textContent = msg;
+                messageBox.className = `message-box ${type}-message`; // Set class based on type
+                messageBox.style.display = 'block';
+            }
+
+            function hideMessage() {
+                messageBox.style.display = 'none';
             }
         });
     </script>
