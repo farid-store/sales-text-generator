@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generatedTextarea = document.getElementById('generatedText');
     const copyBtn = document.getElementById('copyBtn');
 
-    const backendUrl = 'http://localhost:3000/generate-text';
+    const backendUrl = 'https://sales-text-generator.vercel.app/generate-text';
 
     generateBtn.addEventListener('click', async () => {
         const productName = productNameInput.value.trim();
