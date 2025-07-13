@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sales Text Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Sales Text Generator</h1>
+            <p class="subtitle">Craft compelling sales copy in seconds with the power of AI.</p>
+        </header>
+
+        <main>
+            <section class="input-section card">
+                <h2>Input Details</h2>
+                <div class="form-group">
+                    <label for="productName">Product/Service Name:</label>
+                    <input type="text" id="productName" placeholder="e.g., Smartwatch Pro" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="audience">Target Audience:</label>
+                    <input type="text" id="audience" placeholder="e.g., Tech enthusiasts, Busy professionals" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sellingPoints">Key Selling Points (comma-separated):</label>
+                    <textarea id="sellingPoints" rows="3" placeholder="e.g., Long battery life, Waterproof, Health tracking" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tone">Tone:</label>
+                        <select id="tone">
+                            <option value="Persuasive">Persuasive</option>
+                            <option value="Informative">Informative</option>
+                            <option value="Enthusiastic">Enthusiastic</option>
+                            <option value="Humorous">Humorous</option>
+                            <option value="Formal">Formal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="length">Length:</label>
+                        <select id="length">
+                            <option value="Short (1-2 sentences)">Short</option>
+                            <option value="Medium (3-5 sentences)">Medium</option>
+                            <option value="Long (1-2 paragraphs)">Long</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="language">Output Language:</label>
+                    <select id="language">
+                        <option value="English">English</option>
+                        <option value="Indonesian">Indonesian</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                </div>
+
+                <button id="generateBtn" class="btn primary-btn">Generate Sales Text</button>
+            </section>
+
+            <section class="output-section card">
+                <h2>Generated Sales Text</h2>
+                <textarea id="generatedText" rows="10" readonly placeholder="Your generated sales text will appear here..."></textarea>
+                <button id="copyBtn" class="btn secondary-btn">Copy Text</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 AI Sales Text Generator. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

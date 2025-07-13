@@ -1,0 +1,252 @@
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    /* Color Palette */
+    --primary-color: #007bff; /* Biru cerah */
+    --secondary-color: #28a745; /* Hijau untuk copy */
+    --accent-color: #6f42c1; /* Ungu untuk sentuhan modern */
+    --text-dark: #343a40; /* Teks gelap */
+    --text-light: #6c757d; /* Teks abu-abu */
+    --background-light: #f8f9fa; /* Latar belakang terang */
+    --card-background: #ffffff; /* Latar belakang card */
+    --border-color: #e9ecef; /* Warna border */
+    --hover-darken: rgba(0, 0, 0, 0.05); /* Efek hover ringan */
+
+    /* Typography */
+    --font-family-primary: 'Poppins', sans-serif;
+    --font-size-base: 16px;
+
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0; /* Reset default body margin */
+    padding: var(--spacing-md);
+    box-sizing: border-box;
+    line-height: 1.6;
+}
+
+.container {
+    background-color: var(--background-light); /* Container itself is also light background */
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 900px; /* Lebarkan sedikit untuk layout dua kolom */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Shadow lebih lembut */
+    display: flex;
+    flex-direction: column; /* Default ke kolom */
+    gap: var(--spacing-lg); /* Jarak antar section */
+}
+
+header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+h1 {
+    font-size: 2.5em; /* Lebih besar */
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600; /* Lebih tebal */
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 1.8em; /* Lebih besar */
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column; /* Default ke kolom untuk mobile */
+    gap: var(--spacing-lg);
+}
+
+.card {
+    background-color: var(--card-background);
+    padding: var(--spacing-lg);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Shadow lebih halus */
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: var(--font-size-base);
+    font-family: var(--font-family-primary);
+    color: var(--text-dark);
+    background-color: #fcfcfc;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+    background-color: #fff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: flex;
+    gap: var(--spacing-md); /* Jarak antar kolom dalam baris */
+    margin-bottom: var(--spacing-md);
+}
+
+.form-row .form-group {
+    flex: 1; /* Membuat kolom mengambil ruang yang sama */
+    margin-bottom: 0; /* Reset margin-bottom karena sudah ada gap */
+}
+
+.btn {
+    display: block; /* Agar tombol mengambil lebar penuh */
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    transform: translateY(-2px); /* Efek angkat saat hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #0056b3; /* Sedikit lebih gelap saat hover */
+}
+
+.secondary-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    margin-top: var(--spacing-sm);
+}
+
+.secondary-btn:hover {
+    background-color: #218838; /* Sedikit lebih gelap saat hover */
+}
+
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.output-section textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: var(--font-size-base);
+    font-family: var(--font-family-primary);
+    color: var(--text-dark);
+    background-color: #fcfcfc;
+    resize: vertical;
+    min-height: 200px;
+    box-sizing: border-box; /* Include padding in width */
+    margin-bottom: var(--spacing-sm); /* Jarak antara textarea dan tombol copy */
+}
+
+footer {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    main {
+        flex-direction: row; /* Layout berdampingan untuk tablet dan desktop */
+    }
+
+    .input-section,
+    .output-section {
+        flex: 1; /* Memastikan keduanya mengambil ruang yang sama */
+    }
+
+    .form-group.full-width { /* Jika ada elemen yang ingin selalu lebar penuh */
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-md);
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    .btn {
+        font-size: 1em;
+        padding: var(--spacing-sm);
+    }
+    .form-row {
+        flex-direction: column; /* Ubah baris menjadi kolom di layar kecil */
+        gap: 0; /* Hapus gap antar elemen jika sudah menjadi kolom */
+    }
+    .form-row .form-group {
+        margin-bottom: var(--spacing-md); /* Tambahkan kembali margin untuk setiap form-group */
+    }
+}
